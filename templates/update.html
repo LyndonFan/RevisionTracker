@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Study Record</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1 style="text-align: center;">Update Task</h1>
+
+    <form action="/update/{{record.id}}" method="POST">
+        <label for="subject">Subject:</label><br>
+        <select id="subject" name="subject" size="5">
+            {% for s in subjects %}
+            {% if s[0]==record.subject %}
+            <option value="{{record.subject}}" selected>{{record.subject}}</option>
+            {% else %}
+            <option value="{{s[0]}}">{{s[0]}}</option>
+            {% endif %}
+            {% endfor %}
+        </select><br>
+        <label for="topic">Subject:</label><br>
+        <select id="topic" name="topic" size="5">
+            {% for t in topics %}
+            {% if t[0]==record.topic %}
+            <option value="{{record.topic}}" selected>{{record.topic}}</option>
+            {% else %}
+            <option value="{{t[0]}}">{{t[0]}}</option>
+            {% endif %}
+            {% endfor %}
+        </select><br>
+        <label for="date">Date:</label><br>
+        <input type="date" name="date" id="date" required value="{{record.date_created.date()}}"><br>
+        <label for="study_length">Length:</label><br>
+        <input type="number" name="study_length" id="study_length" required min=1 max=3600 value="{{record.study_length}}"><br>
+        <label for="comment">Comment:</label><br>
+        <input type="text" name="comment" id="comment" maxlength=200 value="{{record.comment}}"><br>
+        <input type="submit" value="Update Task">
+    </form>
+</div>
+{% endblock %}
