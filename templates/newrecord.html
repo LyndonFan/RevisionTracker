@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Add new record</title>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous">
+</script>
+
+<script>
+    $(document).ready(function() {
+    $('#subject').change(function() {
+
+        var subject = $('#subject').val();
+
+        console.log(subject);
+
+        // Remove old options
+        $('#topic').find('option').remove();  
+
+        if (subject==""){
+            $('#topic').append('<option value="">-- Waiting a subject --</option>');
+        } else {
+            // Make Ajax Request and expect JSON-encoded data
+            $.getJSON(
+                '/get_topics' + '/' + subject,
+                function(data) {
+                    if (data.length==0){
+                        $('#topic').append('<option value="">-- Please create a topic --</option>');
+                    } else {
+                        // Add new items
+                        $.each(data, function(key, val) {
+                            var option_item = '<option value="' + val + '">' + val + '</option>'
+                            $('#topic').append(option_item);
+                        });
+                    };
+                }
+            );
+        }
+
+        
+    });
+    });
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1 style="text-align: center;">Add New Record</h1>
+    <form method="POST">
+        <label for='subject'>Subject:</label>
+        <select name='subject' id='subject'>
+            {% if subjects|length < 1 %}
+            <option value=''>-- Please create a subject --</option>
+            {% else %}
+            <option value='' selected>-- Select a subject below --</option>
+            {% for s in subjects %}
+            <option value='{{s}}'>{{s}}</option>
+            {% endfor %}
+            {% endif %}
+        </select>
+        <br>
+        <label for='topic'>Topic:</label>
+        <option value=''>-- Waiting for a subject --</option>
+        <select name='topic' id='topic'>
+        </select>
+        <br>
+        <label for='date_created'>Date:</label>
+        <input type='date' name='date_created' id='date_created'></input>
+        <input type="submit" value="Add Record">
+    </form>
+    <br>
+    <a href="/">Go back</a>
+</div>
+{% endblock %}

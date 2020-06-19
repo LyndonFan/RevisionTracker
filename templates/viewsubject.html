@@ -1,19 +1,17 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>Study Record</title>
+<title>Study Record: {{subject}}</title>
 {% endblock %}
 
 {% block body %}
 <div class="content">
-    <h1 style="text-align: center;">Study Record</h1>
-    <a href="/add/record">Add new record</a>
+    <h1 style="text-align: center;">{{subject}}</h1>
     {% if records|length < 1 %}
-    <h4 style="text-align: center;">There are no records of your studies. Start now!</1>
+    <h4 style="text-align: center;">There are no records of you studying {{subject}}. Start now!</1>
     {% else %}
     <table>
         <tr>
-            <th>Subject</th>
             <th>Topic</th>
             <th>Date</th>
             <th>Length</th>
@@ -22,7 +20,6 @@
         </tr>
         {% for record in records %}
             <tr>
-                <td>{{ record.subject }}</td>
                 <td>{{ record.topic }}</td>
                 <td>{{ record.date_created.date() }}</td>
                 <td>{{ record.study_length//60 }} h {{ record.study_length%60 }} min</td>
@@ -37,35 +34,23 @@
     </table>
     {% endif %}
     <br>
-    <br>
-    <a href="/add/subject">Add new subject</a>
-    <br>
+    {% if topics|length < 1 %}
+    <h4 style="text-align: center;">You haven't created any topics for {{subject}}. Create one now!</1>
+    {% else %}
     <table>
         <tr>
-            <th>Subjects</th>
+            <th>Topic</th>
         </tr>
-        {% for s in subjects %}
-        <tr><th><a href="/view/subject/{{ s }}">{{s}}</a></th></tr>
+        {% for t in topics %}
+        <tr>
+            <th>{{ t }}</th>
+        </tr>
         {% endfor %}
     </table>
+    {% endif %}
     <br>
     <a href="/add/topic">Add new topic</a>
     <br>
-    <table>
-        <tr>
-            <th>Subject</th>
-            <th>Topic</th>
-        </tr>
-        {% for s in subjects %}
-        {% for t in topics %}
-        {% if t.subject==s %}
-        <tr>
-            <th><a href="/view/subject/{{ t.subject }}">{{t.subject}}</a></th>
-            <th>{{ t }}</th>
-        </tr>
-        {% endif %}
-        {% endfor %}
-        {% endfor %}
-    </table>
+    <a href="/">Go back</a>
 </div>
 {% endblock %}

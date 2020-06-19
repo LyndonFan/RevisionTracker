@@ -1,16 +1,21 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>Study Record</title>
+<title>Add new subject</title>
 {% endblock %}
 
 {% block body %}
 <div class="content">
     <h1 style="text-align: center;">Add New Subject</h1>
-    
-    <form action="/" method="POST">
+    {% if exist %}
+    <h4>{{ subject_name }} is already a subject.</h4>
+    {% else %}
+    {% endif %}
+    <form method="POST">
         <input type="text" name="subject" id="subject">
-        <input type="submit" value="Add Record">
+        <input type="submit" value="Add Subject">
     </form>
+    <br>
+    <a href="/">Go back</a>
 </div>
 {% endblock %}
