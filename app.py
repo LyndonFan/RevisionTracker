@@ -119,10 +119,14 @@ def add_record():
             s = request.form["subject"]
             subject = Subject.query.filter_by(subject=s).first()
             t = request.form['topic']
-            existing = Topic.query.filter_by(subject=subject).filter_by(topic=t).first()
-            dt = datetime.strptime(request.form["date_created"],'%d-%m-%y')
-            #if not (existing is None):
-                #db.session.add(Record(subject=subject,topic=existing,date=dt))
+            topic = Topic.query.filter_by(subject=subject).filter_by(topic=t).first()
+            dt = datetime.strptime(request.form["date_created"], '%Y-%m-%d')
+            print(dt, type(dt))
+            study_length = request.form['study_hour']*60 + request.form['study_min']
+            comment = request.form['comment']
+            if not (existing is None):
+                db.session.add(Record(subject=subject,topic=existing,date=dt,study_length=study_length,comment=comment))
+                return 'DONE'
         except:
             return "There was a problem trying to add the new record."
     else:
