@@ -2,7 +2,7 @@
 
 {% block head %}
 <title>Add new record</title>
-
+<!-- Code for dynamically updating options. Don't touch. -->
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"
     integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
     crossorigin="anonymous">
@@ -43,6 +43,13 @@
     });
     });
 </script>
+<script>
+    $(document).ready( function() {
+    var today = moment().format('YYYY-MM-DD');
+    $('#date_created').val(today);
+    });
+</script>
+<!-- End of code for dynamically updating options. -->
 {% endblock %}
 
 {% block body %}
@@ -50,7 +57,7 @@
     <h1 style="text-align: center;">Add New Record</h1>
     <form method="POST">
         <label for='subject'>Subject:</label>
-        <select name='subject' id='subject'>
+        <select required name='subject' id='subject'>
             {% if subjects|length < 1 %}
             <option value=''>-- Please create a subject --</option>
             {% else %}
@@ -62,12 +69,18 @@
         </select>
         <br>
         <label for='topic'>Topic:</label>
-        <option value=''>-- Waiting for a subject --</option>
-        <select name='topic' id='topic'>
+        <select required name='topic' id='topic'>
+            <option value=''>-- Waiting for a subject --</option>
         </select>
         <br>
         <label for='date_created'>Date:</label>
-        <input type='date' name='date_created' id='date_created'></input>
+        <input required type='date' name='date_created' id='date_created'></input>
+        <br>
+        <label>Length :</label>
+        <input required type='number' name='study_hour' id='study_hour' min='0' max='23' step='1' value='1'></input>
+         hr 
+        <input required type='number' name='study_min' id='study_min' min='0' max='59' step='1' value='0'></input> min
+        <br>
         <input type="submit" value="Add Record">
     </form>
     <br>
