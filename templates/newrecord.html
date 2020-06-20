@@ -43,13 +43,14 @@
     });
     });
 </script>
+<!-- End of code for dynamically updating options. -->
 <script>
     $(document).ready( function() {
-    var today = moment().format('YYYY-MM-DD');
-    $('#date_created').val(today);
+        let today = new Date().toISOString().substr(0, 10);
+        document.querySelector("#date_created").value = today;
+        document.querySelector("#date_created").max = today;
     });
 </script>
-<!-- End of code for dynamically updating options. -->
 {% endblock %}
 
 {% block body %}
