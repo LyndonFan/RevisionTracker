@@ -7,7 +7,7 @@ TL;DR: A website that helps you track your revision by subject and topic.
 - Edit or delete study sessions.
 
 # Installation
-Clone this repo, then run `python3 app.py`.
+Clone this repo, run `python3 app.py`, then goto `http://127.0.0.1:5000`.
 
 If the `test.db` file is missing, try running the following with python3 in the terminal:
 ```
