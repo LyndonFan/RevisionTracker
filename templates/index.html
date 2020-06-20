@@ -28,9 +28,9 @@
                 <td>{{ record.study_length//60 }} h {{ record.study_length%60 }} min</td>
                 <td>{{ record.comment }}</td>
                 <td>
-                    <a href="/delete/{{record.id}}">Delete</a>
+                    <a href="/delete/record/{{record.id}}">Delete</a>
                     <br>
-                    <a href="/update/{{record.id}}">Update</a>
+                    <a href="/update/record/{{record.id}}">Update</a>
                 </td>
             </tr>
         {% endfor %}
@@ -45,7 +45,7 @@
             <th>Subjects</th>
         </tr>
         {% for s in subjects %}
-        <tr><th><a href="/view/subject/{{ s }}">{{s}}</a></th></tr>
+        <tr><th><a href="/view/{{ s }}">{{s}}</a></th></tr>
         {% endfor %}
     </table>
     <br>
@@ -60,7 +60,7 @@
         {% for t in topics %}
         {% if t.subject==s %}
         <tr>
-            <th><a href="/view/subject/{{ t.subject }}">{{t.subject}}</a></th>
+            <th><a href="/view/{{ t.subject }}">{{t.subject}}</a></th>
             <th>{{ t }}</th>
         </tr>
         {% endif %}

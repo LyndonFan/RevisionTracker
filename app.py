@@ -68,7 +68,7 @@ def prep_subject():
     else:
         return render_template('newsubject.html')
 
-@app.route('/view/subject/<string:s>')
+@app.route('/view/<string:s>')
 def view_subject(s):
     subject = Subject.query.filter_by(subject=s).first()
     records = Record.query.filter_by(subject=subject).order_by(Record.date_created).all()
@@ -115,20 +115,21 @@ def add_record():
     subjects = Subject.query.order_by(Subject.subject).all()
     if request.method == 'POST':
         print("adding record")
-        try:
-            s = request.form["subject"]
-            subject = Subject.query.filter_by(subject=s).first()
-            t = request.form['topic']
-            topic = Topic.query.filter_by(subject=subject).filter_by(topic=t).first()
-            dt = datetime.strptime(request.form["date_created"], '%Y-%m-%d')
-            print(dt, type(dt))
-            study_length = request.form['study_hour']*60 + request.form['study_min']
-            comment = request.form['comment']
-            if not (existing is None):
-                db.session.add(Record(subject=subject,topic=existing,date=dt,study_length=study_length,comment=comment))
-                return 'DONE'
-        except:
-            return "There was a problem trying to add the new record."
+        # try:
+        s = request.form["subject"]
+        subject = Subject.query.filter_by(subject=s).first()
+        t = request.form['topic']
+        topic = Topic.query.filter_by(subject=subject).filter_by(topic=t).first()
+        dt = datetime.strptime(request.form["date_created"], '%Y-%m-%d')
+        print(request.form['study_hour'], type(request.form['study_hour']))
+        study_length = int(request.form['study_hour'])*60 + int(request.form['study_min'])
+        comment = request.form['comment']
+        if not (topic is None):
+            db.session.add(Record(subject=subject,topic=topic,date_created=dt,study_length=study_length,comment=comment))
+            db.session.commit()
+            return redirect('/')
+        # except:
+        #     return "There was a problem trying to add the new record."
     else:
         return render_template('newrecord.html', subjects=subjects)
 
@@ -143,16 +144,14 @@ def delete(id):
     except:
         return "There was a problem deleting that record."
 
-@app.route('/update/<int:id>', methods=['GET','POST'])
+@app.route('/update/record/<int:id>', methods=['GET','POST'])
 def update(id):
     record_to_update = Record.query.get_or_404(id)
-    subjects = Record.query.with_entities(Record.subject).distinct()
-    topics = Record.query.with_entities(Record.topic).distinct()
+    topics = Topic.query.filter_by(subject=record_to_update.subject).all()
 
     if request.method == 'POST':
-        record_to_update.subject = request.form['subject']
-        record_to_update.topic = request.form['topic']
-        record_to_update.study_length = int(request.form['study_length'])
+        record_to_update.topic = Topic.query.filter_by(subject=record_to_update.subject, topic=request.form['topic']).first()
+        record_to_update.study_length = int(request.form['study_hour']) * 60 + int(request.form['study_min'])
         y, m, d = request.form['date'].split("-")
         record_to_update.date_created = record_to_update.date_created.replace(year=int(y),month=int(m),day=int(d))
         record_to_update.comment = request.form['comment']
@@ -162,9 +161,8 @@ def update(id):
         except:
             return "There was a problem updating the record."
     else:
-        print(subjects)
         print(topics)
-        return render_template('update.html',subjects=subjects,topics=topics,record=record_to_update)
+        return render_template('update.html',topics=topics,record=record_to_update)
 
 if __name__ == "__main__":
     app.run(debug=True)

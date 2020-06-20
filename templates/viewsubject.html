@@ -22,12 +22,12 @@
             <tr>
                 <td>{{ record.topic }}</td>
                 <td>{{ record.date_created.date() }}</td>
-                <td>{{ record.study_length//60 }} h {{ record.study_length%60 }} min</td>
+                <td>{{ int(record.study_length/60) }} h {{ record.study_length%60 }} min</td>
                 <td>{{ record.comment }}</td>
                 <td>
-                    <a href="/delete/{{record.id}}">Delete</a>
+                    <a href="/delete/record/{{record.id}}">Delete</a>
                     <br>
-                    <a href="/update/{{record.id}}">Update</a>
+                    <a href="/update/record/{{record.id}}">Update</a>
                 </td>
             </tr>
         {% endfor %}
