@@ -114,21 +114,17 @@ def add_topic():
 def add_record():
     subjects = Subject.query.order_by(Subject.subject).all()
     if request.method == 'POST':
-        return "DONE"
-        # print("adding topic")
-        # #try:
-        # s = request.form["subject"]
-        # subject = Subject.query.filter_by(subject=s).first()
-        # t = request.form['topic']
-        # existing = Topic.query.filter_by(subject=subject).filter_by(topic=t).first()
-        # if existing is None:
-        #     db.session.add(Topic(topic=t,subject=subject))
-        #     db.session.commit()
-        #     return redirect('/')
-        # else:
-        #     return render_template('newtopic.html', error=True, topic_name = t)
-        # #except:
-        # #    return "There was a problem trying to add the new topic."
+        print("adding record")
+        try:
+            s = request.form["subject"]
+            subject = Subject.query.filter_by(subject=s).first()
+            t = request.form['topic']
+            existing = Topic.query.filter_by(subject=subject).filter_by(topic=t).first()
+            dt = datetime.strptime(request.form["date_created"],'%d-%m-%y')
+            #if not (existing is None):
+                #db.session.add(Record(subject=subject,topic=existing,date=dt))
+        except:
+            return "There was a problem trying to add the new record."
     else:
         return render_template('newrecord.html', subjects=subjects)
 
