@@ -56,6 +56,9 @@
 {% block body %}
 <div class="content">
     <h1 style="text-align: center;">Add New Record</h1>
+    {% if added %}
+    <h4 style="text-align: center;">New record added.</h4>
+    {% endif %}
     <form method="POST">
         <label for='subject'>Subject:</label>
         <select required name='subject' id='subject'>

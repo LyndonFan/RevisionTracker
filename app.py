@@ -74,7 +74,7 @@ def prep_subject():
 def view_subject(s):
     subject = Subject.query.filter_by(subject=s).first()
     records = Record.query.filter_by(subject=subject).order_by(Record.date_created).all()
-    topics = Topic.query.filter_by(subject=subject).order_by(Topic.topic).all()
+    topics = Topic.query.filter_by(subject=subject).all()
     return render_template('viewsubject.html',records = records, subject = subject, topics = topics)
 
 # CATEGORY: Topics
@@ -85,7 +85,7 @@ def get_topics(subject_name):
     if subject is None:
         return jsonify([])
     else:
-        topics = Topic.query.filter_by(subject=subject).order_by(Topic.topic).all()
+        topics = Topic.query.filter_by(subject=subject).all()
         topic_names = [t.topic for t in topics]
         return jsonify(topic_names)
 
@@ -111,7 +111,7 @@ def add_topic():
                 db.session.commit()
             else:
                 return render_template('newtopic.html', error=True, topic_name = t)
-        return redirect('/')
+        return redirect('/add/topic')
         #except:
         #    return "There was a problem trying to add the new topic."
     else:
@@ -147,11 +147,11 @@ def add_record():
         if not (topic is None):
             db.session.add(Record(subject=subject,topic=topic,date_created=dt,study_length=study_length,comment=comment))
             db.session.commit()
-            return redirect('/')
+            return render_template('newrecord.html', subjects=subjects, added=True)#redirect('/add/record')
         # except:
         #     return "There was a problem trying to add the new record."
     else:
-        return render_template('newrecord.html', subjects=subjects)
+        return render_template('newrecord.html', subjects=subjects, added=False)
 
 @app.route('/delete/record/<int:id>')
 def delete_record(id):
