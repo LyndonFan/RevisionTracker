@@ -22,7 +22,7 @@
             <tr>
                 <td>{{ record.topic }}</td>
                 <td>{{ record.date_created.date() }}</td>
-                <td>{{ int(record.study_length/60) }} h {{ record.study_length%60 }} min</td>
+                <td>{{ (record.study_length//60) }} h {{ record.study_length%60 }} min</td>
                 <td>{{ record.comment }}</td>
                 <td>
                     <a href="/delete/record/{{record.id}}">Delete</a>
@@ -34,22 +34,28 @@
     </table>
     {% endif %}
     <br>
+    <a href="/add/topic">Add new topic</a>
+    <br>
     {% if topics|length < 1 %}
     <h4 style="text-align: center;">You haven't created any topics for {{subject}}. Create one now!</1>
     {% else %}
     <table>
         <tr>
             <th>Topic</th>
+            <th>Actions</th>
         </tr>
         {% for t in topics %}
         <tr>
             <th>{{ t }}</th>
+            <td>
+                View
+                <br>
+                <a href="/delete/topic/{{t.id}}">Delete</a>
+            </td>
         </tr>
         {% endfor %}
     </table>
     {% endif %}
-    <br>
-    <a href="/add/topic">Add new topic</a>
     <br>
     <a href="/">Go back</a>
 </div>

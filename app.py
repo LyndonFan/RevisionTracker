@@ -2,6 +2,8 @@ from flask import *
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
+from os import path, walk
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 db = SQLAlchemy(app)
@@ -91,22 +93,40 @@ def get_topics(subject_name):
 def add_topic():
     subjects = Subject.query.order_by(Subject.subject).all()
     if request.method == 'POST':
-        print("adding topic")
-        #try:
+        print("adding topic(s)")
+        #try
         s = request.form["subject"]
         subject = Subject.query.filter_by(subject=s).first()
-        t = request.form['topic']
-        existing = Topic.query.filter_by(subject=subject).filter_by(topic=t).first()
-        if existing is None:
-            db.session.add(Topic(topic=t,subject=subject))
-            db.session.commit()
-            return redirect('/')
-        else:
-            return render_template('newtopic.html', error=True, topic_name = t)
+        ts = []
+        ts.append(request.form['topic'])
+        print(request.form['topic'])
+        print(request.form['topics'])
+        ts += request.form['topics'].split(";")
+        ts = list(filter(lambda x: len(x)>0, ts))
+        print(ts)
+        for t in ts:
+            existing = Topic.query.filter_by(subject=subject).filter_by(topic=t).first()
+            if existing is None:
+                db.session.add(Topic(topic=t,subject=subject))
+                db.session.commit()
+            else:
+                return render_template('newtopic.html', error=True, topic_name = t)
+        return redirect('/')
         #except:
         #    return "There was a problem trying to add the new topic."
     else:
         return render_template('newtopic.html', subjects=subjects)
+
+@app.route('/delete/topic/<int:id>')
+def delete_topic(id):
+    topic_to_delete = Topic.query.get_or_404(id)
+
+    try:
+        db.session.delete(topic_to_delete)
+        db.session.commit()
+        return redirect('/')
+    except:
+        return "There was a problem deleting that topic."
 
 # CATEGORY: Records
 
@@ -134,7 +154,7 @@ def add_record():
         return render_template('newrecord.html', subjects=subjects)
 
 @app.route('/delete/record/<int:id>')
-def delete(id):
+def delete_record(id):
     record_to_delete = Record.query.get_or_404(id)
 
     try:
@@ -165,4 +185,13 @@ def update(id):
         return render_template('update.html',topics=topics,record=record_to_update)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    extra_dirs = ['/Users/lyndonf/Desktop/RevisionTracker',]
+    extra_files = extra_dirs[:]
+    for extra_dir in extra_dirs:
+        for dirname, dirs, files in walk(extra_dir):
+            for filename in files:
+                filename = path.join(dirname, filename)
+                if path.isfile(filename):
+                    extra_files.append(filename)
+    app.run(extra_files=extra_files, debug=True)
+    # app.run(debug=True)

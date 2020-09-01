@@ -8,7 +8,7 @@
 <div class="content">
     <h1 style="text-align: center;">Add New Topic</h1>
     {% if exist %}
-    <h4>{{ subject_name }} is already a topic.</h4>
+    <h4>{{ subject_name }} is already a topic. Any previous topics before this have been added.</h4>
     {% endif %}
     <form method="POST">
         <select id="subject" name="subject">
@@ -16,7 +16,12 @@
             <option value="{{s}}">{{s}}</option>
             {% endfor %}
         </select>
+        <br>
         <input type="text" name="topic" id="topic">
+        <br>
+        <label for="topics">Or if you want, enter multiple topics separated by ";":</label>
+        <input type="text" name="topics" id="topics">
+        <br>
         <input type="submit" value="Add Topic">
     </form>
     <br>
