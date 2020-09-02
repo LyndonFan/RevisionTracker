@@ -22,8 +22,8 @@
         </tr>
         {% for record in records %}
             <tr>
-                <td>{{ record.subject }}</td>
-                <td>{{ record.topic }}</td>
+                <td><a href="/view/subject/{{ record.subject }}">{{ record.subject }}</a></td>
+                <td><a href="/view/topic/{{ record.subject }}/{{ record.topic }}">{{ record.topic }}</a></td>
                 <td>{{ record.date_created.date() }}</td>
                 <td>{{ record.study_length//60 }} h {{ record.study_length%60 }} min</td>
                 <td>{{ record.comment }}</td>
@@ -46,7 +46,7 @@
             <th>Subjects</th>
         </tr>
         {% for s in subjects %}
-        <tr><th><a href="/view/{{ s }}">{{s}}</a></th></tr>
+        <tr><th><a href="/view/subject/{{ s }}">{{s}}</a></th></tr>
         {% endfor %}
     </table>
 </div>

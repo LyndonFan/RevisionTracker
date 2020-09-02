@@ -70,7 +70,7 @@ def prep_subject():
     else:
         return render_template('newsubject.html')
 
-@app.route('/view/<string:s>')
+@app.route('/view/subject/<string:s>')
 def view_subject(s):
     subject = Subject.query.filter_by(subject=s).first()
     records = Record.query.filter_by(subject=subject).order_by(Record.date_created).all()
@@ -127,6 +127,14 @@ def delete_topic(id):
         return redirect('/')
     except:
         return "There was a problem deleting that topic."
+
+@app.route('/view/topic/<string:s>/<string:t>')
+def view_topic(s,t):
+    subject = Subject.query.filter_by(subject=s).first()
+    topic = Topic.query.filter_by(subject=subject,topic=t).first()
+    records = Record.query.filter_by(subject=subject,topic=topic).order_by(Record.date_created).all()
+    return render_template('viewtopic.html', subject = subject, records = records, topic = topic)
+
 
 # CATEGORY: Records
 

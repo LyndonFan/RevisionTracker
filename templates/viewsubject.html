@@ -7,6 +7,7 @@
 {% block body %}
 <div class="content">
     <h1 style="text-align: center;">{{subject}}</h1>
+    <a style="text-align: center;" href="/add/record">Add new record</a>
     {% if records|length < 1 %}
     <h4 style="text-align: center;">There are no records of you studying {{subject}}. Start now!</1>
     {% else %}
@@ -20,7 +21,7 @@
         </tr>
         {% for record in records %}
             <tr>
-                <td>{{ record.topic }}</td>
+                <td><a href="/view/topic/{{ subject }}/{{ record.topic }}">{{ record.topic }}</a></td>
                 <td>{{ record.date_created.date() }}</td>
                 <td>{{ (record.study_length//60) }} h {{ record.study_length%60 }} min</td>
                 <td>{{ record.comment }}</td>
@@ -46,10 +47,8 @@
         </tr>
         {% for t in topics %}
         <tr>
-            <th>{{ t }}</th>
+            <th><a href="/view/topic/{{subject}}/{{t}}">{{t}}</a></th>
             <td>
-                View
-                <br>
                 <a href="/delete/topic/{{t.id}}">Delete</a>
             </td>
         </tr>
