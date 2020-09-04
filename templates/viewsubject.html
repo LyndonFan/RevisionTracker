@@ -22,7 +22,7 @@
         {% for record in records %}
             <tr>
                 <td><a href="/view/topic/{{ subject }}/{{ record.topic }}">{{ record.topic }}</a></td>
-                <td>{{ record.date_created.date() }}</td>
+                <td><a href="/view/date/{{ record.date_created.date().strftime('%Y-%m-%d') }}">{{ record.date_created.date() }}</a></td>
                 <td>{{ (record.study_length//60) }} h {{ record.study_length%60 }} min</td>
                 <td>{{ record.comment }}</td>
                 <td>

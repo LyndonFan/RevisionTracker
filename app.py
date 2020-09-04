@@ -192,6 +192,15 @@ def update(id):
         print(topics)
         return render_template('update.html',topics=topics,record=record_to_update)
 
+# CATEGORY: Date
+
+@app.route('/view/date/<string:d>')
+def view_date(d):
+    dt = datetime.strptime(d, '%Y-%m-%d')
+    records = Record.query.filter_by(date_created = dt).all()
+    return render_template('viewdate.html', date = d, records = records)
+
+
 if __name__ == "__main__":
     extra_dirs = ['/Users/lyndonf/Desktop/RevisionTracker',]
     extra_files = extra_dirs[:]
