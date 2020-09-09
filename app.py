@@ -71,11 +71,25 @@ def prep_subject():
         return render_template('newsubject.html')
 
 @app.route('/view/subject/<string:s>')
-def view_subject(s):
+@app.route('/view/subject/<string:s>/<string:direction>')
+def view_subject(s,direction=""):
     subject = Subject.query.filter_by(subject=s).first()
+    message = ""
+    if direction=="prev":
+        prev_subject = Subject.query.order_by(Subject.id.desc()).filter(Subject.id < subject.id).first()
+        if (prev_subject):
+            return redirect('/view/subject/'+prev_subject.subject)
+        else:
+            message = "This is the first subject."
+    if direction=="next":
+        next_subject = Subject.query.order_by(Subject.id.asc()).filter(Subject.id > subject.id).first()
+        if (next_subject):
+            return redirect('/view/subject/'+next_subject.subject)
+        else:
+            message = "This is the last subject."
     records = Record.query.filter_by(subject=subject).order_by(Record.date_created).all()
     topics = Topic.query.filter_by(subject=subject).all()
-    return render_template('viewsubject.html',records = records, subject = subject, topics = topics)
+    return render_template('viewsubject.html',records = records, subject = subject, topics = topics, message = message)
 
 # CATEGORY: Topics
 
@@ -120,7 +134,6 @@ def add_topic():
 @app.route('/delete/topic/<int:id>')
 def delete_topic(id):
     topic_to_delete = Topic.query.get_or_404(id)
-
     try:
         db.session.delete(topic_to_delete)
         db.session.commit()
@@ -129,11 +142,25 @@ def delete_topic(id):
         return "There was a problem deleting that topic."
 
 @app.route('/view/topic/<string:s>/<string:t>')
-def view_topic(s,t):
+@app.route('/view/topic/<string:s>/<string:t>/<string:direction>')
+def view_topic(s,t,direction=""):
     subject = Subject.query.filter_by(subject=s).first()
     topic = Topic.query.filter_by(subject=subject,topic=t).first()
+    message = ""
+    if direction=="prev":
+        prev_topic = Topic.query.filter_by(subject=subject).order_by(Topic.id.desc()).filter(Topic.id < topic.id).first()
+        if (prev_topic):
+            return redirect('/view/topic/'+s+'/'+prev_topic.topic)
+        else:
+            message = "This is the first topic."
+    if direction=="next":
+        next_topic = Topic.query.filter_by(subject=subject).order_by(Topic.id.asc()).filter(Topic.id > topic.id).first()
+        if (next_topic):
+            return redirect('/view/topic/'+s+'/'+next_topic.topic)
+        else:
+            message = "This is the last topic."
     records = Record.query.filter_by(subject=subject,topic=topic).order_by(Record.date_created).all()
-    return render_template('viewtopic.html', subject = subject, records = records, topic = topic)
+    return render_template('viewtopic.html', subject = subject, records = records, topic = topic, message = message)
 
 
 # CATEGORY: Records

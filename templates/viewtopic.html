@@ -6,7 +6,22 @@
 
 {% block body %}
 <div class="content">
-    <h1 style="text-align: center;">{{subject}} -- {{topic}}</h1>
+    <table style="border: none;">
+        <tr>
+            <td><a href="/view/subject/{{subject}}/prev">Previous Subject</a></td>
+            <th><h1 style="text-align: center;">{{subject}}</h1></th>
+            <td><a href="/view/subject/{{subject}}/next">&nbsp;  Next Subject  &nbsp;</a></td>
+        </tr>
+        <tr>
+            <td><a href="/view/topic/{{subject}}/{{topic}}/prev">Previous Topic</a></td>
+            <th><h1 style="text-align: center;">{{topic}}</h1></th>
+            <td><a href="/view/topic/{{subject}}/{{topic}}/next">&nbsp;  Next Topic  &nbsp;</a></td>
+        </tr>
+    </table>
+    {% if message!="" %}
+    <h4 style="text-align: center;">{{message}}</h4> 
+    {% endif %}
+    <!-- <h1 style="text-align: center;">{{subject}} -- {{topic}}</h1> -->
     <a style="text-align: center;" href="/add/record">Add new record</a>
     {% if records|length < 1 %}
     <h4 style="text-align: center;">There are no records of you studying {{topic}}. Start now!</1>
