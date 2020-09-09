@@ -6,7 +6,13 @@
 
 {% block body %}
 <div class="content">
-    <h1 style="text-align: center;">{{date}}</h1>
+    <table style="border: none;">
+        <tr>
+            <td><a href="/view/date/{{date}}/prev">Previous Day</a></td>
+            <th><h1 style="text-align: center;">{{date}}</h1></th>
+            <td><a href="/view/date/{{date}}/next">  Next Day  </a></td>
+        </tr>
+    </table>
     <a style="text-align: center;" href="/add/record">Add new record</a>
     {% if records|length < 1 %}
     <h4 style="text-align: center;">There are no records of you studying on {{date}}. Start now!</1>

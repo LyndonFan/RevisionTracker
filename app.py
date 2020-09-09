@@ -1,6 +1,6 @@
 from flask import *
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import *
 
 from os import path, walk
 
@@ -195,10 +195,17 @@ def update(id):
 # CATEGORY: Date
 
 @app.route('/view/date/<string:d>')
-def view_date(d):
+@app.route('/view/date/<string:d>/<string:direction>')
+def view_date(d, direction=""):
     dt = datetime.strptime(d, '%Y-%m-%d')
-    records = Record.query.filter_by(date_created = dt).all()
-    return render_template('viewdate.html', date = d, records = records)
+    print(direction)
+    if direction=="":
+        records = Record.query.filter_by(date_created = dt).all()
+        return render_template('viewdate.html', date = d, records = records)
+    else:
+        dt += timedelta(days= (-1 if direction=="prev" else 1))
+        d = datetime.strftime(dt, '%Y-%m-%d')
+        return redirect('/view/date/'+d)
 
 
 if __name__ == "__main__":
