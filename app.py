@@ -44,7 +44,7 @@ class Record(db.Model):
 
 @app.route('/',methods=['GET','POST'])
 def index():
-    records = Record.query.order_by(Record.date_created).all()
+    records = Record.query.order_by(Record.date_created.desc()).limit(20).all()
     subjects = Subject.query.order_by(Subject.subject).all()
     topics = Topic.query.order_by(Topic.topic).all()
     return render_template('index.html',records = records, subjects = subjects, topics = topics)
@@ -211,4 +211,3 @@ if __name__ == "__main__":
                 if path.isfile(filename):
                     extra_files.append(filename)
     app.run(extra_files=extra_files, debug=True)
-    # app.run(debug=True)
