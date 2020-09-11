@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>Update Record</title>
+<title>Edit Record</title>
 {% endblock %}
 
 {% block body %}
 <div class="content">
-    <h1 style="text-align: center;">Update Record</h1>
+    <h1 style="text-align: center;">Edit Record</h1>
 
-    <form action="/update/record/{{record.id}}" method="POST">
+    <form action="/edit/record/{{record.id}}" method="POST">
         Subject: {{record.subject}} (You can't change this.)<br>
         <label for="topic">Topic:</label>
         <select id="topic" name="topic">
@@ -28,7 +28,7 @@
         <input type="number" name="study_min" id="study_min" required min=0 max=59 step=1 value="{{record.study_length % 60}}"> min<br>
         <label for="comment">Comment:</label>
         <input type="text" name="comment" id="comment" maxlength=200 value="{{record.comment}}"><br>
-        <input type="submit" value="Update Task">
+        <input type="submit" value="Edit Record">
     </form>
 </div>
 {% endblock %}
