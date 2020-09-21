@@ -199,8 +199,8 @@ def delete_record(id):
     except:
         return "There was a problem deleting that record."
 
-@app.route('/update/record/<int:id>', methods=['GET','POST'])
-def update(id):
+@app.route('/edit/record/<int:id>', methods=['GET','POST'])
+def edit(id):
     record_to_update = Record.query.get_or_404(id)
     topics = Topic.query.filter_by(subject=record_to_update.subject).all()
 
@@ -217,7 +217,7 @@ def update(id):
             return "There was a problem updating the record."
     else:
         print(topics)
-        return render_template('update.html',topics=topics,record=record_to_update)
+        return render_template('edit.html',topics=topics,record=record_to_update)
 
 # CATEGORY: Date
 
