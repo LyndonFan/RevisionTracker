@@ -87,7 +87,7 @@ def view_subject(s,direction=""):
             return redirect('/view/subject/'+next_subject.subject)
         else:
             message = "This is the last subject."
-    records = Record.query.filter_by(subject=subject).order_by(Record.date_created).all()
+    records = Record.query.filter_by(subject=subject).order_by(Record.date_created.desc()).all()
     topics = Topic.query.filter_by(subject=subject).all()
     return render_template('viewsubject.html',records = records, subject = subject, topics = topics, message = message)
 
@@ -159,7 +159,7 @@ def view_topic(s,t,direction=""):
             return redirect('/view/topic/'+s+'/'+next_topic.topic)
         else:
             message = "This is the last topic."
-    records = Record.query.filter_by(subject=subject,topic=topic).order_by(Record.date_created).all()
+    records = Record.query.filter_by(subject=subject,topic=topic).order_by(Record.date_created.desc()).all()
     return render_template('viewtopic.html', subject = subject, records = records, topic = topic, message = message)
 
 
