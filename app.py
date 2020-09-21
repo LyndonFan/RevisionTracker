@@ -200,7 +200,7 @@ def delete_record(id):
         return "There was a problem deleting that record."
 
 @app.route('/edit/record/<int:id>', methods=['GET','POST'])
-def edit(id):
+def edit_record(id):
     record_to_update = Record.query.get_or_404(id)
     topics = Topic.query.filter_by(subject=record_to_update.subject).all()
 
@@ -218,6 +218,11 @@ def edit(id):
     else:
         print(topics)
         return render_template('edit.html',topics=topics,record=record_to_update)
+
+@app.route('/view/record')
+def view_record():
+    records = Record.query.order_by(Record.date_created.desc()).all()
+    return render_template('viewrecord.html', records = records)
 
 # CATEGORY: Date
 
